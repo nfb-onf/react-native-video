@@ -1244,14 +1244,16 @@ static int const RCTVideoUnset = -1;
       if(self.onVideoFullscreenPlayerWillPresent) {
         self.onVideoFullscreenPlayerWillPresent(@{@"target": self.reactTag});
       }
-      [viewController presentViewController:_playerViewController animated:true completion:^{
-        _playerViewController.showsPlaybackControls = YES;
-        _fullscreenPlayerPresented = fullscreen;
-        _playerViewController.autorotate = _fullscreenAutorotate;
-        if(self.onVideoFullscreenPlayerDidPresent) {
-          self.onVideoFullscreenPlayerDidPresent(@{@"target": self.reactTag});
-        }
-      }];
+      if (!_playerViewController.isBeingPresented) {
+        [viewController presentViewController:_playerViewController animated:true completion:^{
+          _playerViewController.showsPlaybackControls = YES;
+          _fullscreenPlayerPresented = fullscreen;
+          _playerViewController.autorotate = _fullscreenAutorotate;
+          if(self.onVideoFullscreenPlayerDidPresent) {
+            self.onVideoFullscreenPlayerDidPresent(@{@"target": self.reactTag});
+          }
+        }];
+      }
     }
   }
   else if ( !fullscreen && _fullscreenPlayerPresented )
