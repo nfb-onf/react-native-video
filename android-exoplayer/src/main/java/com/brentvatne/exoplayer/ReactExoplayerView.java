@@ -291,7 +291,7 @@ class ReactExoplayerView extends FrameLayout implements
 
         @Override
         public void show() {
-            if (!isVisible()) eventEmitter.onShowControls(true);
+            if (!isVisible()) {eventEmitter.onShowControls(true);
             super.show();
         }
 
@@ -640,7 +640,7 @@ class ReactExoplayerView extends FrameLayout implements
                 videoLoaded();
                 //Setting the visibility for the playerControlView
                 if(playerControlView != null) {
-                    playerControlView.show();
+                    // playerControlView.show();
                 }
                 break;
             case ExoPlayer.STATE_ENDED:
