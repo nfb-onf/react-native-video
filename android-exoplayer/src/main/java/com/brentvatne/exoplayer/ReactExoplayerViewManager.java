@@ -47,6 +47,7 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
     private static final String PROP_PROGRESS_UPDATE_INTERVAL = "progressUpdateInterval";
     private static final String PROP_REPORT_BANDWIDTH = "reportBandwidth";
     private static final String PROP_SEEK = "seek";
+    private static final String PROP_KEY_PRESS = "keyPress";
     private static final String PROP_RATE = "rate";
     private static final String PROP_MIN_LOAD_RETRY_COUNT = "minLoadRetryCount";
     private static final String PROP_MAXIMUM_BIT_RATE = "maxBitRate";
@@ -325,4 +326,10 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
 
         return result;
     }
+
+    @ReactProp(name = PROP_KEY_PRESS, defaultBoolean = true)
+    public void setKeyPress(final ReactVideoView videoView, final boolean onTouch) {
+        videoView.togglePlayerControlVisibility();
+    }
+
 }

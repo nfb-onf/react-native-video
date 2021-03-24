@@ -270,7 +270,7 @@ class ReactExoplayerView extends FrameLayout implements
     /**
      * Toggling the visibility of the player control view 
      */
-    private void togglePlayerControlVisibility() {
+    public void togglePlayerControlVisibility() {
         if(player == null) return;
         reLayout(playerControlView);
         if (playerControlView.isVisible()) {
