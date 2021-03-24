@@ -280,12 +280,35 @@ class ReactExoplayerView extends FrameLayout implements
         }
     }
 
+    class CustomPlayerControlView extends PlayerControlView {
+
+        VideoEventEmitter eventEmitter = null;
+
+        public CustomPlayerControlView(Context context, VideoEventEmitter inEmitter) {
+            super(context, /* attrs= */ null);
+            eventEmitter = inEmitter;
+        }
+
+        @Override
+        public void show() {
+            if (!isVisible()) eventEmitter.onShowControls(true);
+            super.show();
+        }
+
+        @Override
+        public void hide() {
+            if (isVisible()) eventEmitter.onShowControls(false);
+            super.hide();
+        }
+
+    }
+
     /**
      * Initializing Player control
      */
     private void initializePlayerControl() {
         if (playerControlView == null) {
-            playerControlView = new PlayerControlView(getContext());
+            playerControlView = new CustomPlayerControlView(getContext(), eventEmitter);
         }
 
         // Setting the player for the playerControlView
@@ -293,13 +316,13 @@ class ReactExoplayerView extends FrameLayout implements
         playerControlView.show();
         playPauseControlContainer = playerControlView.findViewById(R.id.exo_play_pause_container);
 
-        // Invoking onClick event for exoplayerView
-        exoPlayerView.setOnClickListener(new OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                togglePlayerControlVisibility();
-            }
-        });
+        // // Invoking onClick event for exoplayerView
+        // exoPlayerView.setOnClickListener(new OnClickListener() {
+        //     @Override
+        //     public void onClick(View v) {
+        //         togglePlayerControlVisibility();
+        //     }
+        // });
 
         // Invoking onPlayerStateChanged event for Player
         eventListener = new Player.EventListener() {

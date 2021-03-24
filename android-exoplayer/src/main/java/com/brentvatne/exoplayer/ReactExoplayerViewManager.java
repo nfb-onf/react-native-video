@@ -327,9 +327,4 @@ public class ReactExoplayerViewManager extends ViewGroupManager<ReactExoplayerVi
         return result;
     }
 
-    @ReactProp(name = PROP_KEY_PRESS, defaultBoolean = true)
-    public void setKeyPress(final ReactVideoView videoView, final boolean onTouch) {
-        videoView.togglePlayerControlVisibility();
-    }
-
 }

@@ -170,9 +170,4 @@ public class ReactVideoViewManager extends SimpleViewManager<ReactVideoView> {
     public void setControls(final ReactVideoView videoView, final boolean controls) {
         videoView.setControls(controls);
     }
-
-    @ReactProp(name = PROP_KEY_PRESS, defaultBoolean = true)
-    public void setKeyPress(final ReactVideoView videoView, final boolean onTouch) {
-        videoView.setKeyPress(onTouch);
-    }
 }

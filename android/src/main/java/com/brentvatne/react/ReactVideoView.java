@@ -54,6 +54,7 @@ public class ReactVideoView extends ScalableVideoView implements
     MediaController.MediaPlayerControl {
 
     public enum Events {
+        EVENT_ON_SHOW_CONTROLS("onShowControls"),
         EVENT_LOAD_START("onVideoLoadStart"),
         EVENT_LOAD("onVideoLoad"),
         EVENT_ERROR("onVideoError"),
@@ -170,13 +171,6 @@ public class ReactVideoView extends ScalableVideoView implements
                 }
             }
         };
-    }
-
-    public void setKeyPress(boolean onPress) {
-        if (mUseNativeControls) {
-            initializeMediaControllerIfNeeded();
-            mediaController.show();
-        }
     }
 
     @Override

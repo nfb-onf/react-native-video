@@ -144,6 +144,12 @@ export default class Video extends Component {
     }
   };
 
+  _onShowControls = (event) => {
+    if (this.props.onShowControls) {
+      this.props.onShowControls(event.nativeEvent);
+    }
+  }
+
   _onFullscreenPlayerWillPresent = (event) => {
     if (this.props.onFullscreenPlayerWillPresent) {
       this.props.onFullscreenPlayerWillPresent(event.nativeEvent);
@@ -280,6 +286,7 @@ export default class Video extends Component {
         patchVer: source.patchVer || 0,
         requestHeaders: source.headers ? this.stringsOnlyObject(source.headers) : {}
       },
+      onShowControls: this._onShowControls,
       onVideoLoadStart: this._onLoadStart,
       onVideoLoad: this._onLoad,
       onVideoError: this._onError,
@@ -441,6 +448,7 @@ Video.propTypes = {
   progressUpdateInterval: PropTypes.number,
   useTextureView: PropTypes.bool,
   hideShutterView: PropTypes.bool,
+  onShowControls: PropTypes.func,
   onLoadStart: PropTypes.func,
   onLoad: PropTypes.func,
   onBuffer: PropTypes.func,

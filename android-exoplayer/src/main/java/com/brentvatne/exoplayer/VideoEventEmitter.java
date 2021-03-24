@@ -25,6 +25,7 @@ class VideoEventEmitter {
         this.eventEmitter = reactContext.getJSModule(RCTEventEmitter.class);
     }
 
+    private static final String EVENT_ON_SHOW_CONTROLS = "onShowControls";
     private static final String EVENT_LOAD_START = "onVideoLoadStart";
     private static final String EVENT_LOAD = "onVideoLoad";
     private static final String EVENT_ERROR = "onVideoError";
@@ -48,6 +49,7 @@ class VideoEventEmitter {
     private static final String EVENT_PLAYBACK_RATE_CHANGE = "onPlaybackRateChange";
 
     static final String[] Events = {
+            EVENT_ON_SHOW_CONTROLS,
             EVENT_LOAD_START,
             EVENT_LOAD,
             EVENT_ERROR,
@@ -72,6 +74,7 @@ class VideoEventEmitter {
 
     @Retention(RetentionPolicy.SOURCE)
     @StringDef({
+            EVENT_ON_SHOW_CONTROLS,
             EVENT_LOAD_START,
             EVENT_LOAD,
             EVENT_ERROR,
@@ -118,6 +121,8 @@ class VideoEventEmitter {
     private static final String EVENT_PROP_HAS_AUDIO_FOCUS = "hasAudioFocus";
     private static final String EVENT_PROP_IS_BUFFERING = "isBuffering";
     private static final String EVENT_PROP_PLAYBACK_RATE = "playbackRate";
+
+    private static final String EVENT_PROP_CONTROLS_VISIBILE = "controlsVisible";
 
     private static final String EVENT_PROP_ERROR = "error";
     private static final String EVENT_PROP_ERROR_STRING = "errorString";
@@ -205,6 +210,12 @@ class VideoEventEmitter {
 
     void end() {
         receiveEvent(EVENT_END, null);
+    }
+
+    void onShowControls(boolean visibility) {
+        WritableMap map = Arguments.createMap();
+        map.putBoolean(EVENT_PROP_CONTROLS_VISIBILE, visibility);
+        receiveEvent(EVENT_ON_SHOW_CONTROLS, map);
     }
 
     void fullscreenWillPresent() {
