@@ -279,6 +279,8 @@ class ReactExoplayerView extends FrameLayout implements
             playerControlView.hide();
         } else {
             playerControlView.show();
+            // playerControlView.findViewById(R.id.exo_play).requestFocus();
+            // playerControlView.findViewById(R.id.exo_pause).requestFocus();
         }
     }
 
@@ -293,7 +295,11 @@ class ReactExoplayerView extends FrameLayout implements
 
         @Override
         public void show() {
-            if (!isVisible()) eventEmitter.onShowControls(true);
+            if (!isVisible()) {
+                playerControlView.findViewById(R.id.exo_play).requestFocus();
+                playerControlView.findViewById(R.id.exo_pause).requestFocus();
+                eventEmitter.onShowControls(true);
+            }
             super.show();
         }
 
@@ -316,7 +322,6 @@ class ReactExoplayerView extends FrameLayout implements
         // Setting the player for the playerControlView
         playerControlView.setPlayer(player);
         playerControlView.setShowTimeoutMs(0);
-        playerControlView.show();
         playPauseControlContainer = playerControlView.findViewById(R.id.exo_play_pause_container);
         timeBar = playerControlView.findViewById(R.id.exo_progress);
         timeBar.setKeyTimeIncrement(5000);
@@ -333,13 +338,15 @@ class ReactExoplayerView extends FrameLayout implements
         eventListener = new Player.EventListener() {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (!playWhenReady) eventEmitter.paused(true);
+                if (!playWhenReady && playbackState == 3) eventEmitter.paused(true);
                 reLayout(playPauseControlContainer);
                 //Remove this eventListener once its executed. since UI will work fine once after the reLayout is done
                 player.removeListener(eventListener);
             }
         };
         player.addListener(eventListener);
+
+        Log.v("ReactTVApp", "initialize player controls");
     }
 
     /**
@@ -647,7 +654,7 @@ class ReactExoplayerView extends FrameLayout implements
                 videoLoaded();
                 //Setting the visibility for the playerControlView
                 if(playerControlView != null) {
-                    // playerControlView.show();
+                   // playerControlView.show();
                 }
                 break;
             case ExoPlayer.STATE_ENDED:
