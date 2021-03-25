@@ -42,6 +42,7 @@ class VideoEventEmitter {
     private static final String EVENT_RESUME = "onPlaybackResume";
     private static final String EVENT_READY = "onReadyForDisplay";
     private static final String EVENT_BUFFER = "onVideoBuffer";
+    private static final String EVENT_PAUSED = "onPaused";
     private static final String EVENT_IDLE = "onVideoIdle";
     private static final String EVENT_TIMED_METADATA = "onTimedMetadata";
     private static final String EVENT_AUDIO_BECOMING_NOISY = "onVideoAudioBecomingNoisy";
@@ -64,6 +65,7 @@ class VideoEventEmitter {
             EVENT_RESUME,
             EVENT_READY,
             EVENT_BUFFER,
+            EVENT_PAUSED,
             EVENT_IDLE,
             EVENT_TIMED_METADATA,
             EVENT_AUDIO_BECOMING_NOISY,
@@ -89,6 +91,7 @@ class VideoEventEmitter {
             EVENT_RESUME,
             EVENT_READY,
             EVENT_BUFFER,
+            EVENT_PAUSED,
             EVENT_IDLE,
             EVENT_TIMED_METADATA,
             EVENT_AUDIO_BECOMING_NOISY,
@@ -120,6 +123,7 @@ class VideoEventEmitter {
     private static final String EVENT_PROP_TEXT_TRACKS = "textTracks";
     private static final String EVENT_PROP_HAS_AUDIO_FOCUS = "hasAudioFocus";
     private static final String EVENT_PROP_IS_BUFFERING = "isBuffering";
+    private static final String EVENT_PROP_IS_PAUSED = "isPaused";
     private static final String EVENT_PROP_PLAYBACK_RATE = "playbackRate";
 
     private static final String EVENT_PROP_CONTROLS_VISIBILE = "controlsVisible";
@@ -196,6 +200,12 @@ class VideoEventEmitter {
 
     void ready() {
         receiveEvent(EVENT_READY, null);
+    }
+
+    void paused(boolean isPaused) {
+        WritableMap map = Arguments.createMap();
+        map.putBoolean(EVENT_PROP_IS_PAUSED, isPaused);
+        receiveEvent(EVENT_PAUSED, map);
     }
 
     void buffering(boolean isBuffering) {

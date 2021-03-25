@@ -233,6 +233,12 @@ export default class Video extends Component {
     }
   };
 
+  _onPaused = (event) => {
+    if (this.props.isPaused) {
+      this.props.onPaused(event.nativeEvent);
+    }
+  }
+
   _onBuffer = (event) => {
     if (this.props.onBuffer) {
       this.props.onBuffer(event.nativeEvent);
