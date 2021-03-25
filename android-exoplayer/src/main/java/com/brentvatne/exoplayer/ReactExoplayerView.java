@@ -322,6 +322,7 @@ class ReactExoplayerView extends FrameLayout implements
         // Setting the player for the playerControlView
         playerControlView.setPlayer(player);
         playerControlView.setShowTimeoutMs(0);
+        playerControlView.hide();
         playPauseControlContainer = playerControlView.findViewById(R.id.exo_play_pause_container);
         timeBar = playerControlView.findViewById(R.id.exo_progress);
         timeBar.setKeyTimeIncrement(5000);
@@ -338,7 +339,6 @@ class ReactExoplayerView extends FrameLayout implements
         eventListener = new Player.EventListener() {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
-                if (!playWhenReady && playbackState == 3) eventEmitter.paused(true);
                 reLayout(playPauseControlContainer);
                 //Remove this eventListener once its executed. since UI will work fine once after the reLayout is done
                 player.removeListener(eventListener);
@@ -637,6 +637,7 @@ class ReactExoplayerView extends FrameLayout implements
     @Override
     public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
         String text = "onStateChanged: playWhenReady=" + playWhenReady + ", playbackState=";
+        if (!playWhenReady && playbackState == 3) eventEmitter.paused(true);
         switch (playbackState) {
             case ExoPlayer.STATE_IDLE:
                 text += "idle";
@@ -652,10 +653,6 @@ class ReactExoplayerView extends FrameLayout implements
                 onBuffering(false);
                 startProgressHandler();
                 videoLoaded();
-                //Setting the visibility for the playerControlView
-                if(playerControlView != null) {
-                   // playerControlView.show();
-                }
                 break;
             case ExoPlayer.STATE_ENDED:
                 text += "ended";
