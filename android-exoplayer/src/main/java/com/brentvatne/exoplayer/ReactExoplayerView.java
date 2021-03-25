@@ -66,6 +66,7 @@ import com.google.android.exoplayer2.upstream.DefaultBandwidthMeter;
 import com.google.android.exoplayer2.util.MimeTypes;
 import com.google.android.exoplayer2.util.Util;
 import com.google.android.exoplayer2.ui.PlayerControlView;
+import com.google.android.exoplayer2.ui.TimeBar;
 
 import java.net.CookieHandler;
 import java.net.CookieManager;
@@ -100,6 +101,7 @@ class ReactExoplayerView extends FrameLayout implements
     private final VideoEventEmitter eventEmitter;
     private PlayerControlView playerControlView;
     private View playPauseControlContainer;
+    private TimeBar timeBar;
     private Player.EventListener eventListener;
     
     private Handler mainHandler;
@@ -291,7 +293,7 @@ class ReactExoplayerView extends FrameLayout implements
 
         @Override
         public void show() {
-            if (!isVisible()) {eventEmitter.onShowControls(true);
+            if (!isVisible()) eventEmitter.onShowControls(true);
             super.show();
         }
 
@@ -313,8 +315,11 @@ class ReactExoplayerView extends FrameLayout implements
 
         // Setting the player for the playerControlView
         playerControlView.setPlayer(player);
+        playerControlView.setShowTimeoutMs(0);
         playerControlView.show();
         playPauseControlContainer = playerControlView.findViewById(R.id.exo_play_pause_container);
+        timeBar = playerControlView.findViewById(R.id.exo_progress);
+        timeBar.setKeyTimeIncrement(5000);
 
         // // Invoking onClick event for exoplayerView
         // exoPlayerView.setOnClickListener(new OnClickListener() {
@@ -328,6 +333,7 @@ class ReactExoplayerView extends FrameLayout implements
         eventListener = new Player.EventListener() {
             @Override
             public void onPlayerStateChanged(boolean playWhenReady, int playbackState) {
+                if (!playWhenReady) eventEmitter.paused(true);
                 reLayout(playPauseControlContainer);
                 //Remove this eventListener once its executed. since UI will work fine once after the reLayout is done
                 player.removeListener(eventListener);
@@ -541,6 +547,7 @@ class ReactExoplayerView extends FrameLayout implements
         if (player != null) {
             if (player.getPlayWhenReady()) {
                 setPlayWhenReady(false);
+                eventEmitter.paused(true);
             }
         }
     }
