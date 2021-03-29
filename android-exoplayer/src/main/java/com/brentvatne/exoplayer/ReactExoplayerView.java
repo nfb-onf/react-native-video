@@ -14,6 +14,7 @@ import android.view.Window;
 import android.view.accessibility.CaptioningManager;
 import android.widget.FrameLayout;
 import android.view.WindowManager;
+import android.view.KeyEvent;
 
 import com.brentvatne.react.R;
 import com.brentvatne.receiver.AudioBecomingNoisyReceiver;
@@ -279,8 +280,6 @@ class ReactExoplayerView extends FrameLayout implements
             playerControlView.hide();
         } else {
             playerControlView.show();
-            // playerControlView.findViewById(R.id.exo_play).requestFocus();
-            // playerControlView.findViewById(R.id.exo_pause).requestFocus();
         }
     }
 
@@ -309,6 +308,13 @@ class ReactExoplayerView extends FrameLayout implements
             super.hide();
         }
 
+        @Override
+        public boolean dispatchKeyEvent(KeyEvent event) {
+            Log.v("ReactTVApp","key press");
+            eventEmitter.onShowControls(true);
+            return super.dispatchKeyEvent(event);
+        }
+
     }
 
     /**
@@ -325,7 +331,7 @@ class ReactExoplayerView extends FrameLayout implements
         playerControlView.hide();
         playPauseControlContainer = playerControlView.findViewById(R.id.exo_play_pause_container);
         timeBar = playerControlView.findViewById(R.id.exo_progress);
-        timeBar.setKeyTimeIncrement(5000);
+        timeBar.setKeyTimeIncrement(10000);
 
         // // Invoking onClick event for exoplayerView
         // exoPlayerView.setOnClickListener(new OnClickListener() {
