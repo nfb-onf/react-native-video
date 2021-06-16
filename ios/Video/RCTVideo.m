@@ -743,7 +743,31 @@ static int const RCTVideoUnset = -1;
                                            selector:@selector(handleAVPlayerAccess:)
                                                name:AVPlayerItemNewAccessLogEntryNotification
                                              object:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self
+                                                    name:AVPlayerItemMediaSelectionDidChangeNotification
+                                                  object:nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(handleMediaSelectionChange:)
+                                                 name:AVPlayerItemMediaSelectionDidChangeNotification
+                                               object:[_player currentItem]];
 
+}
+
+- (void)handleMediaSelectionChange:(NSNotification *)notification {
+    AVPlayerItem *playerItem = (AVPlayerItem *)notification.object;
+    if([playerItem.asset isKindOfClass:[AVURLAsset class]]){
+        AVURLAsset *asset = (AVURLAsset *)playerItem.asset;
+        AVMediaSelectionGroup *audio = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicAudible];
+        AVMediaSelectionGroup *subtitles = [asset mediaSelectionGroupForMediaCharacteristic:AVMediaCharacteristicLegible];
+        AVMediaSelectionOption *selectedAudio = [playerItem.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:audio];
+        AVMediaSelectionOption *selectedSubtitles = [playerItem.currentMediaSelection selectedMediaOptionInMediaSelectionGroup:subtitles];
+        
+        NSLog(@"%@", selectedSubtitles);
+        if (self.onCaptionsChanged) {
+            self.onCaptionsChanged(@{@"captionsEnabled": [NSNumber numberWithInt:(selectedSubtitles != NULL)], @"target": self.reactTag});
+        }
+    }
 }
 
 - (void)handleAVPlayerAccess:(NSNotification *)notification {
