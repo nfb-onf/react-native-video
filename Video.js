@@ -142,6 +142,12 @@ export default class Video extends Component {
     }
   };
 
+  _onCaptionsChanged = (event) => {
+    if (this.props.onCaptionsChanged) {
+      this.props.onCaptionsChanged(event.nativeEvent);
+    }
+  };
+
   _onTimedMetadata = (event) => {
     if (this.props.onTimedMetadata) {
       this.props.onTimedMetadata(event.nativeEvent);
@@ -303,6 +309,7 @@ export default class Video extends Component {
       onVideoProgress: this._onProgress,
       onVideoSeek: this._onSeek,
       onVideoEnd: this._onEnd,
+      onCaptionsChanged: this._onCaptionsChanged,
       onVideoBuffer: this._onBuffer,
       onVideoBandwidthUpdate: this._onBandwidthUpdate,
       onTimedMetadata: this._onTimedMetadata,
@@ -377,6 +384,7 @@ Video.propTypes = {
   onVideoBandwidthUpdate: PropTypes.func,
   onVideoSeek: PropTypes.func,
   onVideoEnd: PropTypes.func,
+  onCaptionsChanged: PropTypes.func,
   onTimedMetadata: PropTypes.func,
   onVideoAudioBecomingNoisy: PropTypes.func,
   onVideoExternalPlaybackChange: PropTypes.func,
